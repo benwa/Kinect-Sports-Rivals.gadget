@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link href="style.css" rel="stylesheet">
+		<style>
+			/* Set the stage*/
+			body {
+				margin: 0;
+				padding: 0;
+				width: 357px;
+				height: 242px;
+				background: url("images/green_bg.png");
+				border: 2px solid #5dc21e;
+			}
+
+			/* Reset sizing*/
+			.slice-leaderboard, .leaderboard-data, .leaderboard-table {
+				display: inline;
+				border: 0;
+				margin: 0;
+				padding: 0;
+			}
+			.ranking {
+				margin: 0 !important;
+			}
+		</style>
+		<script src="jquery.min.js"></script>
+		<script>
+			System.Gadget.settingsUI = "settings.html";
+			System.Gadget.onSettingsClosed = function(event) {
+				if (event.closeAction == event.Action.commit) {
+					getData(System.Gadget.Settings.readString("country"), System.Gadget.Settings.readString("gamertag"));
+				}
+			}
+
+			$(document).ready(function() {
+				if (System.Gadget.Settings.readString("country") && System.Gadget.Settings.readString("gamertag")) {
+					getData(System.Gadget.Settings.readString("country"), System.Gadget.Settings.readString("gamertag"));
+				} else {
+					$(document.body).html("Edit the settings to get started");
+				}
+			});
+
+			function getData(country, gamertag) {
+				// Remove body border
+				$(document.body).css("border", "0");
+
+				// Allow the jQuery to talk to the outside world
+				$.support.cors = true;
+
+				// Supposed to be a POST, but a GET works too
+				$.getJSON("https://www.ksrchampionship.com/?action=leaderboard&response_type=json&country=" + country + "&page=0&search=" + gamertag, function(json) {
+					$(document.body).html(json.leaderboard);
+
+					// Remove unnedded elements
+					$(".header, .leaderboard-form, .paging").remove();
+
+					// Remove labels for IE8 float fix
+					$(".wakeracing, .climbing, .bowling").contents().filter(function(){
+					    return (this.nodeType == 3);
+					}).remove();
+
+					// Re-add labels for IE8 float fix
+					$(".wakeracing").append("WAKERACING");
+					$(".climbing").append("CLIMBING");
+					$(".bowling").append("BOWLING");
+				});
+
+				// Recheck every 60 minutes
+				setInterval(getData(country, gamertag), 60 *  60 * 1000)
+			}
+		</script>
+	</head>
+	<body scroll="no" unselectable="on">
+	</body>
+</html>

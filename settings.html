@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			body {
+			    width: 278px;
+			    height: 80px;
+			    font-family: "Segoe UI", Tahoma, Sans-Serif;
+			    margin: 0;
+			}
+			select {
+				width: 100%;
+			}
+			input {
+				width: 98%;
+			}
+			.placeholder {
+				color: #aaa;
+			}
+		</style>
+		<script src="jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("[placeholder]").focus(function() {
+					var input = $(this);
+					if (input.val() == input.attr("placeholder")) {
+						input.val("");
+						input.removeClass("placeholder");
+					}
+				}).blur(function() {
+					var input = $(this);
+					if (input.val() == "" || input.val() == input.attr("placeholder")) {
+						input.addClass("placeholder");
+						input.val(input.attr("placeholder"));
+					}
+				});
+				setTimeout(function() {
+					$("[placeholder]").trigger("blur");
+				}, 0);
+			});
+		</script>
+		<script>
+			$(document).ready(function() {
+				$("#country").val(System.Gadget.Settings.readString("country") ? System.Gadget.Settings.readString("country") : "US");
+				$("#gamertag").val(System.Gadget.Settings.readString("gamertag") ? System.Gadget.Settings.readString("gamertag") : "");
+			});
+			System.Gadget.onSettingsClosing = function(event) {
+				if (event.closeAction == event.Action.commit) {
+					System.Gadget.Settings.write("country", $("#country").val());
+					System.Gadget.Settings.write("gamertag", $("#gamertag").val());
+				}
+				event.cancel = false;
+			}
+		</script>
+	</head>
+	<body>
+		<select id="country">
+			<option value="US">United States</option>
+			<!-- Increase option width since CSS won't work here -->
+			<option value="GB">United Kingdom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+			<option value="CA">Canada</option>
+			<option value="AU">Australia</option>
+			<option value="FR">France</option>
+			<option value="BR">Brasil</option>
+			<option value="MX">México</option>
+			<option value="DE">Deutschland</option>
+		</select>
+		<br>
+		<input id="gamertag" placeholder="Gamertag" type="text">
+	</body>
+</html>

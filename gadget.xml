@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+	<name>Kinect Sports Rivals Championship</name>
+	<version>1.0.0</version>
+	<author name="Bennett Blodinger">
+		<info url="https://github.com/benwa/Kinect-Sports-Rivals.gadget" text="GitHub" />
+	</author>
+	<description>Track your KSR position</description>
+	<icons>
+		<icon height="64" width="64" src="icon.png" />
+	</icons>
+	<hosts>
+		<host name="sidebar">
+			<autoscaleDPI>true</autoscaleDPI>
+			<base type="HTML" apiVersion="1.0.0" src="index.html" />
+			<permissions>Full</permissions>
+			<platform minPlatformVersion="1.0" />
+			<defaultImage src="drag.png" />
+		</host>
+	</hosts>
+</gadget>
